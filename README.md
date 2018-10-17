@@ -147,7 +147,7 @@ class Rival {
 
 Ahora va pareciéndose a un juego, no?
 
-![demo](video/demo2.gif)
+![demo](videos/demo2.gif)
 
 # Un último chiche
 
