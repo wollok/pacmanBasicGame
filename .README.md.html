@@ -639,77 +639,72 @@ function setDocumentScrollTop(ypos)
 
 </head>
 <body class="markdown-body">
-<h1> <a id="primer-juego-wollok-game" class="anchor" href="#primer-juego-wollok-game" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Primer juego: Wollok Game</h1> 
-<p>Para conocer Wollok Game vamos a desarrollar un pac-man b&aacute;sico con el que conoceremos los conceptos principales del juego.</p> 
-<h1> <a id="primera-iteraci&oacute;n" class="anchor" href="#primera-iteraci%C3%B3n" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Primera iteraci&oacute;n</h1> 
-<h2> <a id="el-tablero" class="anchor" href="#el-tablero" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>El tablero</h2> 
-<p>Generamos un proyecto Wollok, con un programa. Lo primero que escribimos es</p> 
+<h1> <a id="pacman" class="anchor" href="#pacman" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Pacman!</h1> 
+<h1> <a id="segunda-iteraci&oacute;n-rivales" class="anchor" href="#segunda-iteraci%C3%B3n-rivales" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Segunda iteraci&oacute;n: rivales</h1> 
+<h2> <a id="algunos-ajustes-al-tablero" class="anchor" href="#algunos-ajustes-al-tablero" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Algunos ajustes al tablero</h2> 
+<p>Con el gimp o cualquier programa de edici&oacute;n, vamos a ajustar el fondo para que tenga menos contraste y se vea con efecto m&aacute;s apagado, para que los personajes y los elementos se distingan m&aacute;s. Adem&aacute;s le vamos a poner un t&iacute;tulo al juego:</p> 
 <div class="highlight highlight-source-js">
- <pre>program abc {
-    
-	<span class="pl-c"><span class="pl-c">//</span> que arranque el juego!</span>
-	<span class="pl-smi">game</span>.<span class="pl-c1">start</span>()
+ <pre>program pacman {
+	
+	<span class="pl-smi">game</span>.<span class="pl-c1">title</span>(<span class="pl-s"><span class="pl-pds">&quot;</span>Pacman!<span class="pl-pds">&quot;</span></span>)</pre>
+</div> 
+<h2> <a id="el-rival" class="anchor" href="#el-rival" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>El rival</h2> 
+<p>Vamos a generar dos rivales inicialmente, que no tienen un comportamiento diferencial, ambos van a ser objetos visuales ubicados en posiciones distintas y con colores diferentes. Entonces una clase rival suena bien, la ubicamos en el archivo <code>exmample.wlk</code>:</p> 
+<div class="highlight highlight-source-js">
+ <pre><span class="pl-k">class</span> <span class="pl-en">Rival</span> {
+	<span class="pl-k">const</span> <span class="pl-c1">numero</span>
+	
+	<span class="pl-en">constructor</span>(<span class="pl-smi">_numero</span>) {
+		numero <span class="pl-k">=</span> _numero
+	}
+	
+	method <span class="pl-en">image</span>() <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">&quot;</span>rival<span class="pl-pds">&quot;</span></span> <span class="pl-k">+</span> <span class="pl-smi">numero</span>.<span class="pl-c1">toString</span>() <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">&quot;</span>.png<span class="pl-pds">&quot;</span></span>
+
+	method <span class="pl-en">position</span>() <span class="pl-k">=</span> <span class="pl-smi">game</span>.<span class="pl-en">at</span>(numero <span class="pl-k">+</span> <span class="pl-c1">1</span>, numero <span class="pl-k">+</span> <span class="pl-c1">1</span>)
+}</pre>
+</div> 
+<p>El constructor del rival necesita el n&uacute;mero, para determinar</p> 
+<ul> 
+ <li>la imagen que va a utilizar: &quot;rival1.png&quot;, &quot;rival2.png&quot;, etc.</li> 
+ <li>y la posici&oacute;n inicial que va a ocupar, (2, 2) para el primer rival, (3, 3) para el segundo rival, etc.</li> 
+</ul> 
+<h2> <a id="agregando-los-rivales-al-tablero" class="anchor" href="#agregando-los-rivales-al-tablero" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Agregando los rivales al tablero</h2> 
+<p>En el programa pacman incorporamos los dos rivales:</p> 
+<div class="highlight highlight-source-js">
+ <pre>program pacman {
+    <span class="pl-k">...</span>
+
+	<span class="pl-c"><span class="pl-c">//</span> rivales</span>
+	<span class="pl-smi">game</span>.<span class="pl-en">addVisual</span>(<span class="pl-k">new</span> <span class="pl-en">Rival</span>(<span class="pl-c1">1</span>))
+	<span class="pl-smi">game</span>.<span class="pl-en">addVisual</span>(<span class="pl-k">new</span> <span class="pl-en">Rival</span>(<span class="pl-c1">2</span>))
 
 }</pre>
 </div> 
-<p>Bueno, no es algo muy convincente, pero tenemos un tablero provisto por el wko game, que acabamos de conocer.</p> 
-<h2> <a id="mejorando-el-tablero" class="anchor" href="#mejorando-el-tablero" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Mejorando el tablero</h2> 
-<p>Para que el tablero se vea un poco m&aacute;s interesante, vamos a</p> 
+<h2> <a id="estrategia-de-colisi&oacute;n-contra-los-rivales" class="anchor" href="#estrategia-de-colisi%C3%B3n-contra-los-rivales" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Estrategia de colisi&oacute;n contra los rivales</h2> 
+<p>Si ejecutamos el programa, no tiene mucha gracia: el personaje pasa por encima de sus rivales y &eacute;stos, como si nada. Vamos a jugar un poco con estrategia de colisi&oacute;n, cada vez que el personaje choque con un rival</p> 
 <ul> 
- <li>agrandar su tama&ntilde;o, eso nos permitir&aacute; que luego nuestro personaje se pueda mover m&aacute;s confortablemente</li> 
- <li>y pondremos una imagen bonita de fondo</li> 
+ <li>pierde una vida</li> 
+ <li>y vuelve a la posici&oacute;n original</li> 
 </ul> 
-<p>Pueden elegir cualquiera de las im&aacute;genes que quieran, lo debemos guardar en una carpeta que tiene que ser <strong>carpeta fuente</strong>. Si ya bajaste el archivo en una carpeta asset, en el Wollok IDE te va a aparecer como una carpeta com&uacute;n, lo pas&aacute;s a carpeta fuente de la siguiente manera:</p> 
-<p><a href="videos/sourceFolder.gif" target="_blank" rel="noopener noreferrer"><img src="videos/sourceFolder.gif" height="60%" width="60%" style="max-width:100%;" /></a></p> 
-<p>(pod&eacute;s agrandar la imagen haciendo click en ella)</p> 
-<p>De lo contrario, lo com&uacute;n es generar una carpeta fuente desde cero, como se muestra a continuaci&oacute;n:</p> 
-<p><a href="videos/newSourceFolder.gif" target="_blank" rel="noopener noreferrer"><img src="videos/newSourceFolder.gif" height="60%" width="60%" style="max-width:100%;" /></a></p> 
-<p>Ahora s&iacute;, podemos actualizar el programa, poni&eacute;ndole un nombre m&aacute;s representativo que abc:</p> 
+<p>Para eso, necesitamos tener una referencia a los rivales. Cambiaremos entonces la forma de instanciarlos en el programa:</p> 
 <div class="highlight highlight-source-js">
- <pre>program pacman {
+ <pre>    <span class="pl-c"><span class="pl-c">//</span> rivales</span>
+	<span class="pl-k">const</span> <span class="pl-c1">rivales</span> <span class="pl-k">=</span> [<span class="pl-k">new</span> <span class="pl-en">Rival</span>(<span class="pl-c1">1</span>), <span class="pl-k">new</span> <span class="pl-en">Rival</span>(<span class="pl-c1">2</span>)]
 	
-	<span class="pl-c"><span class="pl-c">//</span> l&iacute;mites del juego</span>
-	<span class="pl-smi">game</span>.<span class="pl-c1">width</span>(<span class="pl-c1">14</span>)
-	<span class="pl-smi">game</span>.<span class="pl-c1">height</span>(<span class="pl-c1">8</span>)
-	
-	<span class="pl-c"><span class="pl-c">//</span> fondo</span>
-	<span class="pl-smi">game</span>.<span class="pl-en">boardGround</span>(<span class="pl-s"><span class="pl-pds">&quot;</span>pacmanBackground.jpg<span class="pl-pds">&quot;</span></span>)
-	
-	<span class="pl-c"><span class="pl-c">//</span> que arranque el juego!</span>
-	<span class="pl-smi">game</span>.<span class="pl-c1">start</span>()
-	
-}</pre>
+	<span class="pl-smi">rivales</span>.<span class="pl-smi">forEach</span> { <span class="pl-smi">rival</span> <span class="pl-k">=&gt;</span> 
+		<span class="pl-smi">game</span>.<span class="pl-en">addVisual</span>(rival)
+		<span class="pl-smi">game</span>.<span class="pl-en">whenCollideDo</span>(rival, {
+			<span class="pl-smi">pacman</span>.<span class="pl-en">perderVida</span>()
+		})
+	}</pre>
 </div> 
-<h2> <a id="agregando-un-personaje-principal" class="anchor" href="#agregando-un-personaje-principal" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Agregando un personaje principal</h2> 
-<p>Vamos a crear un pacman, en el archivo example.wlk que nos gener&oacute; el IDE de Wollok. El pacman ser&aacute; nuestro personaje principal, y al igual que cualquier otro elemento visual del juego, debe tener como atributos:</p> 
+<p>Y qu&eacute; hace el m&eacute;todo perderVida() de pacman? Al rival no le importa, la delegaci&oacute;n funciona tambi&eacute;n en los juegos.</p> 
+<h2> <a id="perdiendo-una-vida" class="anchor" href="#perdiendo-una-vida" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Perdiendo una vida</h2> 
+<p>Ahora s&iacute; implementamos la p&eacute;rdida de la vida del pacman, para eso</p> 
 <ul> 
- <li>una imagen asociada (para que el jugador lo identifique en el tablero)</li> 
- <li>y una posici&oacute;n inicial dentro del tablero</li> 
+ <li>necesitamos contar cu&aacute;ntas vidas tiene, con una referencia a un n&uacute;mero nos alcanza</li> 
+ <li> </li> 
 </ul> 
-<p>Escribimos entonces nuestro pacman:</p> 
-<div class="highlight highlight-source-js">
- <pre>object pacman {
-	<span class="pl-k">var</span> image <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">&quot;</span>pacman.png<span class="pl-pds">&quot;</span></span>
-	<span class="pl-k">var</span> position <span class="pl-k">=</span> <span class="pl-smi">game</span>.<span class="pl-en">origin</span>()
-}</pre>
-</div> 
-<p>La imagen corresponde a un nombre de archivo que debe existir en la carpeta &quot;asset&quot; o como lo quieran llamar, y que debe ser una carpeta fuente. El wko game ofrece un mensaje origin() para ubicarlo en la esquina izquierda inferior del tablero.</p> 
-<p>Solamente necesitamos agregarlo al tablero de la siguiente manera:</p> 
-<div class="highlight highlight-source-js">
- <pre>program pacman {
-	
-    <span class="pl-k">...</span>
-	
-	<span class="pl-c"><span class="pl-c">//</span> personaje principal</span>
-	<span class="pl-smi">game</span>.<span class="pl-en">addVisualCharacter</span>(pacman)
-	
-	<span class="pl-c"><span class="pl-c">//</span> que arranque el juego!</span>
-	<span class="pl-smi">game</span>.<span class="pl-c1">start</span>()
-	
-}</pre>
-</div> 
-<p>Y listo! Tenemos una primera versi&oacute;n de nuestro juego:</p> 
-<p><a href="videos/firstGame.gif" target="_blank" rel="noopener noreferrer"><img src="videos/firstGame.gif" alt="demo" style="max-width:100%;" /></a></p> 
 <h1> <a id="c&oacute;mo-seguir-con-el-tutorial" class="anchor" href="#c%C3%B3mo-seguir-con-el-tutorial" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>C&oacute;mo seguir con el tutorial</h1> 
 <p>Desde una l&iacute;nea de comando, escrib&iacute;</p> 
 <div class="highlight highlight-source-shell">

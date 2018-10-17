@@ -1,6 +1,14 @@
 object pacman {
 	var image = "pacman.png"
 	var position = game.origin()
+	var vidas = 3
+
+	method perderVida() {
+		vidas--
+		position = game.origin()	
+	}
+	
+	method juegoTerminado() = vidas == 0
 }
 
 object cherry {
@@ -9,13 +17,13 @@ object cherry {
 }
 
 class Rival {
-	const numero = 0
+	const numero
 	
 	constructor(_numero) {
 		numero = _numero
 	}
 	
-	method image() = "rival" + numero + ".png"
+	method image() = "rival" + numero.toString() + ".png"
 
-	method position() = game.at(numero + 1, numero + 1)	
+	method position() = game.at(numero + 1, numero + 1)
 }
