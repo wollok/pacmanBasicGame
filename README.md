@@ -28,11 +28,13 @@ Para que el tablero se vea un poco más interesante, vamos a
 
 Pueden elegir cualquiera de las imágenes que quieran, lo debemos guardar en una carpeta que tiene que ser **carpeta fuente**. Si ya bajaste el archivo en una carpeta asset, en el Wollok IDE te va a aparecer como una carpeta común, lo pasás a carpeta fuente de la siguiente manera:
 
-![sourceFolder](videos/sourceFolder.gif)
+<img src="videos/sourceFolder.gif" height="60%" width="60%"/>
+
+(podés agrandar la imagen haciendo click en ella)
 
 De lo contrario, lo común es generar una carpeta fuente desde cero, como se muestra a continuación:
 
-![sourceFolder](videos/newSourceFolder.gif)
+<img src="videos/newSourceFolder.gif" height="60%" width="60%"/>
 
 Ahora sí, podemos actualizar el programa, poniéndole un nombre más representativo que abc:
 
@@ -89,4 +91,19 @@ program pacman {
 Y listo! Tenemos una primera versión de nuestro juego:
 
 ![demo](videos/firstGame.gif)
+
+# Cómo seguir con el tutorial
+
+Desde una línea de comando, escribí 
+
+```bash
+$ git checkout 02-rivales
+$ git pull
+```
+
+y leé el archivo README de ese branch. También podés navegar este mismo ejemplo en github:
+
+https://github.com/wollok/pacmanBasicGame
+
+y arriba a la izquierda, donde dice Branch: **master** lo cambiás al **02-rivales**
 
