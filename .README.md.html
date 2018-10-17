@@ -640,79 +640,24 @@ function setDocumentScrollTop(ypos)
 </head>
 <body class="markdown-body">
 <h1> <a id="pacman" class="anchor" href="#pacman" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Pacman!</h1> 
-<h1> <a id="segunda-iteraci&oacute;n-rivales" class="anchor" href="#segunda-iteraci%C3%B3n-rivales" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Segunda iteraci&oacute;n: rivales</h1> 
-<h2> <a id="algunos-ajustes-al-tablero" class="anchor" href="#algunos-ajustes-al-tablero" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Algunos ajustes al tablero</h2> 
-<p>Con el gimp o cualquier programa de edici&oacute;n, vamos a ajustar el fondo para que tenga menos contraste y se vea con efecto m&aacute;s apagado, para que los personajes y los elementos se distingan m&aacute;s. Adem&aacute;s le vamos a poner un t&iacute;tulo al juego:</p> 
-<div class="highlight highlight-source-js">
- <pre>program pacman {
-	
-	<span class="pl-smi">game</span>.<span class="pl-c1">title</span>(<span class="pl-s"><span class="pl-pds">&quot;</span>Pacman!<span class="pl-pds">&quot;</span></span>)</pre>
-</div> 
-<h2> <a id="el-rival" class="anchor" href="#el-rival" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>El rival</h2> 
-<p>Vamos a generar dos rivales inicialmente, que no tienen un comportamiento diferencial, ambos van a ser objetos visuales ubicados en posiciones distintas y con colores diferentes. Entonces una clase rival suena bien, la ubicamos en el archivo <code>exmample.wlk</code>:</p> 
-<div class="highlight highlight-source-js">
- <pre><span class="pl-k">class</span> <span class="pl-en">Rival</span> {
-	<span class="pl-k">const</span> <span class="pl-c1">numero</span>
-	
-	<span class="pl-en">constructor</span>(<span class="pl-smi">_numero</span>) {
-		numero <span class="pl-k">=</span> _numero
-	}
-	
-	method <span class="pl-en">image</span>() <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">&quot;</span>rival<span class="pl-pds">&quot;</span></span> <span class="pl-k">+</span> <span class="pl-smi">numero</span>.<span class="pl-c1">toString</span>() <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">&quot;</span>.png<span class="pl-pds">&quot;</span></span>
-
-	method <span class="pl-en">position</span>() <span class="pl-k">=</span> <span class="pl-smi">game</span>.<span class="pl-en">at</span>(numero <span class="pl-k">+</span> <span class="pl-c1">1</span>, numero <span class="pl-k">+</span> <span class="pl-c1">1</span>)
-}</pre>
-</div> 
-<p>El constructor del rival necesita el n&uacute;mero, para determinar</p> 
+<h1> <a id="tercera-iteraci&oacute;n-rivales-en-movimiento" class="anchor" href="#tercera-iteraci%C3%B3n-rivales-en-movimiento" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tercera iteraci&oacute;n: rivales en movimiento</h1> 
+<p>Por el momento, los rivales est&aacute;n parados, entonces mientras el personaje no vaya hacia sus rivales, &eacute;stos no le quitar&aacute;n vidas. Vamos a hacerlo un poco m&aacute;s interesante.</p> 
+<h2> <a id="movimiento-del-rival" class="anchor" href="#movimiento-del-rival" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Movimiento del rival</h2> 
+<p>El rival deber&iacute;a</p> 
 <ul> 
- <li>la imagen que va a utilizar: &quot;rival1.png&quot;, &quot;rival2.png&quot;, etc.</li> 
- <li>y la posici&oacute;n inicial que va a ocupar, (2, 2) para el primer rival, (3, 3) para el segundo rival, etc.</li> 
+ <li>tratar de acercarse hasta la posici&oacute;n donde est&aacute; el personaje</li> 
+ <li>algunos podr&iacute;an hacerlo m&aacute;s r&aacute;pido que otros</li> 
 </ul> 
-<h2> <a id="agregando-los-rivales-al-tablero" class="anchor" href="#agregando-los-rivales-al-tablero" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Agregando los rivales al tablero</h2> 
-<p>En el programa pacman incorporamos los dos rivales:</p> 
-<div class="highlight highlight-source-js">
- <pre>program pacman {
-    <span class="pl-k">...</span>
-
-	<span class="pl-c"><span class="pl-c">//</span> rivales</span>
-	<span class="pl-smi">game</span>.<span class="pl-en">addVisual</span>(<span class="pl-k">new</span> <span class="pl-en">Rival</span>(<span class="pl-c1">1</span>))
-	<span class="pl-smi">game</span>.<span class="pl-en">addVisual</span>(<span class="pl-k">new</span> <span class="pl-en">Rival</span>(<span class="pl-c1">2</span>))
-
-}</pre>
-</div> 
-<h2> <a id="estrategia-de-colisi&oacute;n-contra-los-rivales" class="anchor" href="#estrategia-de-colisi%C3%B3n-contra-los-rivales" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Estrategia de colisi&oacute;n contra los rivales</h2> 
-<p>Si ejecutamos el programa, no tiene mucha gracia: el personaje pasa por encima de sus rivales y &eacute;stos, como si nada. Vamos a jugar un poco con estrategia de colisi&oacute;n, cada vez que el personaje choque con un rival</p> 
-<ul> 
- <li>pierde una vida</li> 
- <li>y vuelve a la posici&oacute;n original</li> 
-</ul> 
-<p>Para eso, necesitamos tener una referencia a los rivales. Cambiaremos entonces la forma de instanciarlos en el programa:</p> 
-<div class="highlight highlight-source-js">
- <pre>    <span class="pl-c"><span class="pl-c">//</span> rivales</span>
-	<span class="pl-k">const</span> <span class="pl-c1">rivales</span> <span class="pl-k">=</span> [<span class="pl-k">new</span> <span class="pl-en">Rival</span>(<span class="pl-c1">1</span>), <span class="pl-k">new</span> <span class="pl-en">Rival</span>(<span class="pl-c1">2</span>)]
-	
-	<span class="pl-smi">rivales</span>.<span class="pl-smi">forEach</span> { <span class="pl-smi">rival</span> <span class="pl-k">=&gt;</span> 
-		<span class="pl-smi">game</span>.<span class="pl-en">addVisual</span>(rival)
-		<span class="pl-smi">game</span>.<span class="pl-en">whenCollideDo</span>(rival, {
-			<span class="pl-smi">pacman</span>.<span class="pl-en">perderVida</span>()
-		})
-	}</pre>
-</div> 
-<p>Y qu&eacute; hace el m&eacute;todo perderVida() de pacman? Al rival no le importa, la delegaci&oacute;n funciona tambi&eacute;n en los juegos.</p> 
-<h2> <a id="perdiendo-una-vida" class="anchor" href="#perdiendo-una-vida" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Perdiendo una vida</h2> 
-<p>Ahora s&iacute; implementamos la p&eacute;rdida de la vida del pacman, para eso</p> 
-<ul> 
- <li>necesitamos contar cu&aacute;ntas vidas tiene, con una referencia a un n&uacute;mero nos alcanza</li> 
- <li> </li> 
-</ul> 
+<h1> <a id="demo-de-c&oacute;mo-quedar&iacute;a-el-juego-hasta-ahora" class="anchor" href="#demo-de-c%C3%B3mo-quedar%C3%ADa-el-juego-hasta-ahora" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Demo de c&oacute;mo quedar&iacute;a el juego hasta ahora</h1> 
+<p><a href="videos/demo.gif" target="_blank" rel="noopener noreferrer"><img src="videos/demo.gif" alt="video" style="max-width:100%;" /></a></p> 
 <h1> <a id="c&oacute;mo-seguir-con-el-tutorial" class="anchor" href="#c%C3%B3mo-seguir-con-el-tutorial" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>C&oacute;mo seguir con el tutorial</h1> 
 <p>Desde una l&iacute;nea de comando, escrib&iacute;</p> 
 <div class="highlight highlight-source-shell">
- <pre>$ git checkout 02-rivales
+ <pre>$ git checkout 03-movimiento
 $ git pull</pre>
 </div> 
 <p>y le&eacute; el archivo README de ese branch. Tambi&eacute;n pod&eacute;s navegar este mismo ejemplo en github:</p> 
 <p><a href="https://github.com/wollok/pacmanBasicGame">https://github.com/wollok/pacmanBasicGame</a></p> 
-<p>y arriba a la izquierda, donde dice Branch: <strong>master</strong> lo cambi&aacute;s al <strong>02-rivales</strong></p>
+<p>y arriba a la izquierda, donde dice Branch: <strong>master</strong> lo cambi&aacute;s al <strong>03-movimiento</strong></p>
 </body>
 </html>

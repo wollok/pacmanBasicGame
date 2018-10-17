@@ -1,135 +1,177 @@
 # Pacman!
 
-# Segunda iteración: rivales
+# Tercera iteración: rivales en movimiento
 
-## Algunos ajustes al tablero
+Por el momento, los rivales están parados, entonces mientras el personaje no vaya hacia sus rivales, éstos no le quitarán vidas. Vamos a hacerlo un poco más interesante.
 
-Con el gimp o cualquier programa de edición, vamos a ajustar el fondo para que tenga menos contraste y se vea con efecto más apagado, para que los personajes y los elementos se distingan más. Además le vamos a poner un título al juego:
+## Movimiento del rival
+
+El rival debería 
+
+- tratar de acercarse hasta la posición donde está el personaje
+- algunos podrían hacerlo más rápido que otros
+
+En el programa, siempre dentro de la creación de rivales, hacemos:
 
 ```js
-program pacman {
-	
-	game.title("Pacman!")
+	rivales.forEach { rival => 
+        ...
+		game.onTick(1.randomUpTo(5) * 1000, {
+			console.println("rival " + rival + " se acerca a " + pacman)
+			rival.acercarseA(pacman)
+		})
+	}
 ```
 
-## El rival
+## Acercamiento del pacman
 
-Vamos a generar dos rivales inicialmente, que no tienen un comportamiento diferencial, ambos van a ser objetos visuales ubicados en posiciones distintas y con colores diferentes. Entonces una clase rival suena bien, la ubicamos en el archivo `exmample.wlk`:
+Para acercarse al pacman, debemos conocer su posición y como estrategia sencilla
+
+- si el pacman está arriba nuestro, iremos hacia arriba
+- si el pacman está abajo nuestro, iremos hacia abajo
+- si el pacman está a nuestra derecha, iremos hacia la derecha
+- o a la izquierda en caso contrario
+
+Dentro de la clase Rival, escribimos
+
+```js
+class Rival {
+	var property position  // pasa a ser un atributo
+
+   	constructor(_numero) {
+		numero = _numero
+		position = game.at(numero + 1, numero + 1)
+	}
+
+    ...
+
+	method acercarseA(personaje) {
+		var otroPosicion = personaje.position()
+		var newX = position.x() + if (otroPosicion.x() > position.x()) 1 else -1
+		var newY = position.y() + if (otroPosicion.y() > position.y()) 1 else -1
+		position = game.at(newX, newY)
+	}
+```
+
+El método es un poco largo, podemos refactorizarlo luego.
+
+## Demo de cómo quedaría el juego hasta ahora
+
+![video](videos/demo.gif)
+
+En el video vemos que hay algunos inconvenientes
+
+- si el personaje no se mueve, la colisión contra un rival hace que pierda el juego porque se repiten 3 colisiones muy rápidamente
+- por otra parte, si colisionan dos rivales, esto hace que se produzca un mensaje no entendido: perderVida() solo lo entiende el pacman, no el rival
+
+Vamos a mejorar la experiencia de usuario haciendo un refactor importante de nuestra solución, en el programa ya no vamos a asumir que "perdí una vida" ya que quien se mueve no es solo el pacman, sino también los rivales. Entonces queremos trabajar polimórficamente el hecho de que choquen entre sí:
+
+```js
+	rivales.forEach { rival => 
+		game.addVisual(rival)
+		game.whenCollideDo(rival, { personaje =>
+			personaje.chocarCon(rival) // se maneja un método polimórfico
+		})
+		game.onTick(1.randomUpTo(5) * 1000, {
+			rival.acercarseA(pacman)
+		})
+	}
+```
+
+Entonces el pacman al chocar
+
+- pierde una vida
+- resetea su posición
+- le pide al rival que resetee su posición
+- y verifica que el juego no haya terminado
+
+```js
+object pacman {
+	var property position = game.origin()
+	var image = "pacman.png"
+	var vidas = 3
+
+	method juegoTerminado() = vidas == 0
+	
+	method resetPosition() {
+		position = game.origin()
+	}
+	
+	method chocarCon(rival) {
+		// sin dudas perdí una vida
+		vidas--
+		// reset de las posiciones
+		self.resetPosition()
+		rival.resetPosition()
+		// agregamos la validación del juego terminado en pacman
+		if (self.juegoTerminado()) {
+			game.stop()
+		}
+	}
+}
+```
+
+Por otro lado, el rival al chocar con otro rival no va a hacer nada. Pero vamos a mejorar la forma de acercarse hacia el personaje para que no caiga en el tablero (no puede bajar de la posición 0 ni excederse el máximo del ancho o alto del tablero):
 
 ```js
 class Rival {
 	const numero
-	
+	var property position
+
 	constructor(_numero) {
 		numero = _numero
+		self.resetPosition()
 	}
 	
 	method image() = "rival" + numero.toString() + ".png"
 
-	method position() = game.at(numero + 1, numero + 1)
-}
-```
-
-El constructor del rival necesita el número, para determinar
-
-- la imagen que va a utilizar: "rival1.png", "rival2.png", etc.
-- y la posición inicial que va a ocupar, (2, 2) para el primer rival, (3, 3) para el segundo rival, etc.
-
-
-## Agregando los rivales al tablero
-
-En el programa pacman incorporamos los dos rivales:
-
-```js
-program pacman {
-    ...
-
-	// rivales
-	game.addVisual(new Rival(1))
-	game.addVisual(new Rival(2))
-
-}
-```
-
-## Estrategia de colisión contra los rivales
-
-Si ejecutamos el programa, no tiene mucha gracia: el personaje pasa por encima de sus rivales y éstos, como si nada. Vamos a jugar un poco con estrategia de colisión, cada vez que el personaje choque con un rival
-
-- pierde una vida
-- y vuelve a la posición original
-
-Para eso, necesitamos tener una referencia a los rivales. Cambiaremos entonces la forma de instanciarlos en el programa:
-
-```js
-    // rivales
-	const rivales = [new Rival(1), new Rival(2)]
+	method acercarseA(personaje) {
+		var otroPosicion = personaje.position()
+		var newX = position.x() + if (otroPosicion.x() > position.x()) 1 else -1
+		var newY = position.y() + if (otroPosicion.y() > position.y()) 1 else -1
+		// evitamos que se posicionen fuera del tablero
+		newX = newX.max(0).min(game.width() - 1)
+		newY = newY.max(0).min(game.height() - 1)
+		position = game.at(newX, newY)
+	}
 	
-	rivales.forEach { rival => 
-		game.addVisual(rival)
-		game.whenCollideDo(rival, { personaje =>
-			personaje.perderVida()
-		})
+	method resetPosition() {
+		position = game.at(numero + 1, numero + 1)
 	}
+	
+	method chocarCon(otro) {}
+}
 ```
 
-Y qué hace el método perderVida() de pacman? Al rival no le importa, la delegación funciona también en los juegos.
+# La segunda demo
 
-## Perdiendo una vida
+Ahora va pareciéndose a un juego, no?
 
-Ahora sí implementamos la pérdida de la vida del pacman, para eso
+![demo](video/demo2.gif)
 
-- necesitamos contar cuántas vidas tiene, con una referencia a un número nos alcanza
-- y actualizar la posición donde se encuentra
+# Un último chiche
+
+Vamos a evitar que dos rivales colisionen entre sí, para lo cual guardaremos la posición anterior, en caso de que haya colisión con otro rival vamos a respetar que el otro "nos ganó de mano" y volveremos a la posición anterior:
 
 ```js
-object pacman {
+class Rival {
     ...
-	var vidas = 3
+	var previousPosition
 
-	method perderVida() {
-		vidas--
-		position = game.origin()	
+	method acercarseA(personaje) {
+        ...
+		previousPosition = position
+		position = game.at(newX, newY)
 	}
-```
-
-## Terminando el juego
-
-Un agregado más: vamos a parar el juego cuando el pacman pierda tres vidas. Entonces agregamos una pregunta, pero sin saber que el pacman tiene vidas. En el programa:
-
-```js
-	rivales.forEach { rival => 
-		game.addVisual(rival)
-		game.whenCollideDo(rival, { personaje =>
-			personaje.perderVida()
-			if (personaje.juegoTerminado()) {
-				game.stop()
-			}
-		})
+	
+    ...
+	
+	method chocarCon(otro) {
+		self.resetPreviousPosition()
 	}
+	
+	method resetPreviousPosition() {
+		position = previousPosition 
+	}
+}
 ```
-
-Solo nos falta definir el método juegoTerminado() en pacman:
-
-```js
-method juegoTerminado() = vidas == 0
-```
-
-# Demo de cómo quedaría el juego hasta ahora
-
-![video](videos/demo.gif)
-
-# Cómo seguir con el tutorial
-
-Desde una línea de comando, escribí 
-
-```bash
-$ git checkout 03-movimiento
-$ git pull
-```
-
-y leé el archivo README de ese branch. También podés navegar este mismo ejemplo en github:
-
-https://github.com/wollok/pacmanBasicGame
-
-y arriba a la izquierda, donde dice Branch: **master** lo cambiás al **03-movimiento**
-
