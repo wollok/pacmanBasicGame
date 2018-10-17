@@ -2,6 +2,8 @@ import example.*
 
 program pacman {
 	
+	game.title("Pacman!")
+	
 	// límites del juego
 	game.width(14)
 	game.height(8)
@@ -11,7 +13,10 @@ program pacman {
 	
 	// personaje principal
 	game.addVisualCharacter(pacman)
-	
+
+	game.addVisual(new Rival(1))
+	game.addVisual(new Rival(2))
+		
 	// que arranque el juego!
 	game.start()
 	
