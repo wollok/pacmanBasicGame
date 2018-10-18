@@ -648,16 +648,151 @@ function setDocumentScrollTop(ypos)
  <li>tratar de acercarse hasta la posici&oacute;n donde est&aacute; el personaje</li> 
  <li>algunos podr&iacute;an hacerlo m&aacute;s r&aacute;pido que otros</li> 
 </ul> 
-<h1> <a id="demo-de-c&oacute;mo-quedar&iacute;a-el-juego-hasta-ahora" class="anchor" href="#demo-de-c%C3%B3mo-quedar%C3%ADa-el-juego-hasta-ahora" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Demo de c&oacute;mo quedar&iacute;a el juego hasta ahora</h1> 
-<p><a href="videos/demo.gif" target="_blank" rel="noopener noreferrer"><img src="videos/demo.gif" alt="video" style="max-width:100%;" /></a></p> 
-<h1> <a id="c&oacute;mo-seguir-con-el-tutorial" class="anchor" href="#c%C3%B3mo-seguir-con-el-tutorial" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>C&oacute;mo seguir con el tutorial</h1> 
-<p>Desde una l&iacute;nea de comando, escrib&iacute;</p> 
-<div class="highlight highlight-source-shell">
- <pre>$ git checkout 03-movimiento
-$ git pull</pre>
+<p>En el programa, siempre dentro de la creaci&oacute;n de rivales, hacemos:</p> 
+<div class="highlight highlight-source-js">
+ <pre>	<span class="pl-smi">rivales</span>.<span class="pl-smi">forEach</span> { <span class="pl-smi">rival</span> <span class="pl-k">=&gt;</span> 
+        <span class="pl-k">...</span>
+		<span class="pl-smi">game</span>.<span class="pl-en">onTick</span>(<span class="pl-ii">1</span>.<span class="pl-en">randomUpTo</span>(<span class="pl-c1">5</span>) <span class="pl-k">*</span> <span class="pl-c1">1000</span>, {
+			<span class="pl-en">console</span>.<span class="pl-en">println</span>(<span class="pl-s"><span class="pl-pds">&quot;</span>rival <span class="pl-pds">&quot;</span></span> <span class="pl-k">+</span> rival <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">&quot;</span> se acerca a <span class="pl-pds">&quot;</span></span> <span class="pl-k">+</span> pacman)
+			<span class="pl-smi">rival</span>.<span class="pl-en">acercarseA</span>(pacman)
+		})
+	}</pre>
 </div> 
-<p>y le&eacute; el archivo README de ese branch. Tambi&eacute;n pod&eacute;s navegar este mismo ejemplo en github:</p> 
-<p><a href="https://github.com/wollok/pacmanBasicGame">https://github.com/wollok/pacmanBasicGame</a></p> 
-<p>y arriba a la izquierda, donde dice Branch: <strong>master</strong> lo cambi&aacute;s al <strong>03-movimiento</strong></p>
+<h2> <a id="acercamiento-del-pacman" class="anchor" href="#acercamiento-del-pacman" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Acercamiento del pacman</h2> 
+<p>Para acercarse al pacman, debemos conocer su posici&oacute;n y como estrategia sencilla</p> 
+<ul> 
+ <li>si el pacman est&aacute; arriba nuestro, iremos hacia arriba</li> 
+ <li>si el pacman est&aacute; abajo nuestro, iremos hacia abajo</li> 
+ <li>si el pacman est&aacute; a nuestra derecha, iremos hacia la derecha</li> 
+ <li>o a la izquierda en caso contrario</li> 
+</ul> 
+<p>Dentro de la clase Rival, escribimos</p> 
+<div class="highlight highlight-source-js">
+ <pre><span class="pl-k">class</span> <span class="pl-en">Rival</span> {
+	<span class="pl-k">var</span> property position  <span class="pl-c"><span class="pl-c">//</span> pasa a ser un atributo</span>
+
+   	<span class="pl-en">constructor</span>(<span class="pl-smi">_numero</span>) {
+		numero <span class="pl-k">=</span> _numero
+		position <span class="pl-k">=</span> <span class="pl-smi">game</span>.<span class="pl-en">at</span>(numero <span class="pl-k">+</span> <span class="pl-c1">1</span>, numero <span class="pl-k">+</span> <span class="pl-c1">1</span>)
+	}
+
+    <span class="pl-k">...</span>
+
+	method <span class="pl-en">acercarseA</span>(<span class="pl-smi">personaje</span>) {
+		<span class="pl-k">var</span> otroPosicion <span class="pl-k">=</span> <span class="pl-smi">personaje</span>.<span class="pl-en">position</span>()
+		<span class="pl-k">var</span> newX <span class="pl-k">=</span> <span class="pl-smi">position</span>.<span class="pl-c1">x</span>() <span class="pl-k">+</span> <span class="pl-k">if</span> (<span class="pl-smi">otroPosicion</span>.<span class="pl-c1">x</span>() <span class="pl-k">&gt;</span> <span class="pl-smi">position</span>.<span class="pl-c1">x</span>()) <span class="pl-c1">1</span> <span class="pl-k">else</span> <span class="pl-k">-</span><span class="pl-c1">1</span>
+		<span class="pl-k">var</span> newY <span class="pl-k">=</span> <span class="pl-smi">position</span>.<span class="pl-c1">y</span>() <span class="pl-k">+</span> <span class="pl-k">if</span> (<span class="pl-smi">otroPosicion</span>.<span class="pl-c1">y</span>() <span class="pl-k">&gt;</span> <span class="pl-smi">position</span>.<span class="pl-c1">y</span>()) <span class="pl-c1">1</span> <span class="pl-k">else</span> <span class="pl-k">-</span><span class="pl-c1">1</span>
+		position <span class="pl-k">=</span> <span class="pl-smi">game</span>.<span class="pl-en">at</span>(newX, newY)
+	}</pre>
+</div> 
+<p>El m&eacute;todo es un poco largo, podemos refactorizarlo luego.</p> 
+<h2> <a id="demo-de-c&oacute;mo-quedar&iacute;a-el-juego-hasta-ahora" class="anchor" href="#demo-de-c%C3%B3mo-quedar%C3%ADa-el-juego-hasta-ahora" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Demo de c&oacute;mo quedar&iacute;a el juego hasta ahora</h2> 
+<p><a href="videos/demo.gif" target="_blank" rel="noopener noreferrer"><img src="videos/demo.gif" alt="video" style="max-width:100%;" /></a></p> 
+<p>En el video vemos que hay algunos inconvenientes</p> 
+<ul> 
+ <li>si el personaje no se mueve, la colisi&oacute;n contra un rival hace que pierda el juego porque se repiten 3 colisiones muy r&aacute;pidamente</li> 
+ <li>por otra parte, si colisionan dos rivales, esto hace que se produzca un mensaje no entendido: perderVida() solo lo entiende el pacman, no el rival</li> 
+</ul> 
+<p>Vamos a mejorar la experiencia de usuario haciendo un refactor importante de nuestra soluci&oacute;n, en el programa ya no vamos a asumir que &quot;perd&iacute; una vida&quot; ya que quien se mueve no es solo el pacman, sino tambi&eacute;n los rivales. Entonces queremos trabajar polim&oacute;rficamente el hecho de que choquen entre s&iacute;:</p> 
+<div class="highlight highlight-source-js">
+ <pre>	<span class="pl-smi">rivales</span>.<span class="pl-smi">forEach</span> { <span class="pl-smi">rival</span> <span class="pl-k">=&gt;</span> 
+		<span class="pl-smi">game</span>.<span class="pl-en">addVisual</span>(rival)
+		<span class="pl-smi">game</span>.<span class="pl-en">whenCollideDo</span>(rival, { <span class="pl-smi">personaje</span> <span class="pl-k">=&gt;</span>
+			<span class="pl-smi">personaje</span>.<span class="pl-en">chocarCon</span>(rival) <span class="pl-c"><span class="pl-c">//</span> se maneja un m&eacute;todo polim&oacute;rfico</span>
+		})
+		<span class="pl-smi">game</span>.<span class="pl-en">onTick</span>(<span class="pl-ii">1</span>.<span class="pl-en">randomUpTo</span>(<span class="pl-c1">5</span>) <span class="pl-k">*</span> <span class="pl-c1">1000</span>, {
+			<span class="pl-smi">rival</span>.<span class="pl-en">acercarseA</span>(pacman)
+		})
+	}</pre>
+</div> 
+<p>Entonces el pacman al chocar</p> 
+<ul> 
+ <li>pierde una vida</li> 
+ <li>resetea su posici&oacute;n</li> 
+ <li>le pide al rival que resetee su posici&oacute;n</li> 
+ <li>y verifica que el juego no haya terminado</li> 
+</ul> 
+<div class="highlight highlight-source-js">
+ <pre>object pacman {
+	<span class="pl-k">var</span> property position <span class="pl-k">=</span> <span class="pl-smi">game</span>.<span class="pl-en">origin</span>()
+	<span class="pl-k">var</span> image <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">&quot;</span>pacman.png<span class="pl-pds">&quot;</span></span>
+	<span class="pl-k">var</span> vidas <span class="pl-k">=</span> <span class="pl-c1">3</span>
+
+	method <span class="pl-en">juegoTerminado</span>() <span class="pl-k">=</span> vidas <span class="pl-k">==</span> <span class="pl-c1">0</span>
+	
+	method <span class="pl-en">resetPosition</span>() {
+		position <span class="pl-k">=</span> <span class="pl-smi">game</span>.<span class="pl-en">origin</span>()
+	}
+	
+	method <span class="pl-en">chocarCon</span>(<span class="pl-smi">rival</span>) {
+		<span class="pl-c"><span class="pl-c">//</span> sin dudas perd&iacute; una vida</span>
+		vidas<span class="pl-k">--</span>
+		<span class="pl-c"><span class="pl-c">//</span> reset de las posiciones</span>
+		<span class="pl-smi">self</span>.<span class="pl-en">resetPosition</span>()
+		<span class="pl-smi">rival</span>.<span class="pl-en">resetPosition</span>()
+		<span class="pl-c"><span class="pl-c">//</span> agregamos la validaci&oacute;n del juego terminado en pacman</span>
+		<span class="pl-k">if</span> (<span class="pl-smi">self</span>.<span class="pl-en">juegoTerminado</span>()) {
+			<span class="pl-smi">game</span>.<span class="pl-c1">stop</span>()
+		}
+	}
+}</pre>
+</div> 
+<p>Por otro lado, el rival al chocar con otro rival no va a hacer nada. Pero vamos a mejorar la forma de acercarse hacia el personaje para que no caiga en el tablero (no puede bajar de la posici&oacute;n 0 ni excederse el m&aacute;ximo del ancho o alto del tablero):</p> 
+<div class="highlight highlight-source-js">
+ <pre><span class="pl-k">class</span> <span class="pl-en">Rival</span> {
+	<span class="pl-k">const</span> <span class="pl-c1">numero</span>
+	<span class="pl-k">var</span> property position
+
+	<span class="pl-en">constructor</span>(<span class="pl-smi">_numero</span>) {
+		numero <span class="pl-k">=</span> _numero
+		<span class="pl-smi">self</span>.<span class="pl-en">resetPosition</span>()
+	}
+	
+	method <span class="pl-en">image</span>() <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">&quot;</span>rival<span class="pl-pds">&quot;</span></span> <span class="pl-k">+</span> <span class="pl-smi">numero</span>.<span class="pl-c1">toString</span>() <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">&quot;</span>.png<span class="pl-pds">&quot;</span></span>
+
+	method <span class="pl-en">acercarseA</span>(<span class="pl-smi">personaje</span>) {
+		<span class="pl-k">var</span> otroPosicion <span class="pl-k">=</span> <span class="pl-smi">personaje</span>.<span class="pl-en">position</span>()
+		<span class="pl-k">var</span> newX <span class="pl-k">=</span> <span class="pl-smi">position</span>.<span class="pl-c1">x</span>() <span class="pl-k">+</span> <span class="pl-k">if</span> (<span class="pl-smi">otroPosicion</span>.<span class="pl-c1">x</span>() <span class="pl-k">&gt;</span> <span class="pl-smi">position</span>.<span class="pl-c1">x</span>()) <span class="pl-c1">1</span> <span class="pl-k">else</span> <span class="pl-k">-</span><span class="pl-c1">1</span>
+		<span class="pl-k">var</span> newY <span class="pl-k">=</span> <span class="pl-smi">position</span>.<span class="pl-c1">y</span>() <span class="pl-k">+</span> <span class="pl-k">if</span> (<span class="pl-smi">otroPosicion</span>.<span class="pl-c1">y</span>() <span class="pl-k">&gt;</span> <span class="pl-smi">position</span>.<span class="pl-c1">y</span>()) <span class="pl-c1">1</span> <span class="pl-k">else</span> <span class="pl-k">-</span><span class="pl-c1">1</span>
+		<span class="pl-c"><span class="pl-c">//</span> evitamos que se posicionen fuera del tablero</span>
+		newX <span class="pl-k">=</span> <span class="pl-smi">newX</span>.<span class="pl-en">max</span>(<span class="pl-c1">0</span>).<span class="pl-en">min</span>(<span class="pl-smi">game</span>.<span class="pl-c1">width</span>() <span class="pl-k">-</span> <span class="pl-c1">1</span>)
+		newY <span class="pl-k">=</span> <span class="pl-smi">newY</span>.<span class="pl-en">max</span>(<span class="pl-c1">0</span>).<span class="pl-en">min</span>(<span class="pl-smi">game</span>.<span class="pl-c1">height</span>() <span class="pl-k">-</span> <span class="pl-c1">1</span>)
+		position <span class="pl-k">=</span> <span class="pl-smi">game</span>.<span class="pl-en">at</span>(newX, newY)
+	}
+	
+	method <span class="pl-en">resetPosition</span>() {
+		position <span class="pl-k">=</span> <span class="pl-smi">game</span>.<span class="pl-en">at</span>(numero <span class="pl-k">+</span> <span class="pl-c1">1</span>, numero <span class="pl-k">+</span> <span class="pl-c1">1</span>)
+	}
+	
+	method <span class="pl-en">chocarCon</span>(<span class="pl-smi">otro</span>) {}
+}</pre>
+</div> 
+<h1> <a id="la-segunda-demo" class="anchor" href="#la-segunda-demo" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>La segunda demo</h1> 
+<p>Ahora va pareci&eacute;ndose a un juego, no?</p> 
+<p><a href="videos/demo2.gif" target="_blank" rel="noopener noreferrer"><img src="videos/demo2.gif" alt="demo" style="max-width:100%;" /></a></p> 
+<h1> <a id="un-&uacute;ltimo-chiche" class="anchor" href="#un-%C3%BAltimo-chiche" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Un &uacute;ltimo chiche</h1> 
+<p>Vamos a evitar que dos rivales colisionen entre s&iacute;, para lo cual guardaremos la posici&oacute;n anterior, en caso de que haya colisi&oacute;n con otro rival vamos a respetar que el otro &quot;nos gan&oacute; de mano&quot; y volveremos a la posici&oacute;n anterior:</p> 
+<div class="highlight highlight-source-js">
+ <pre><span class="pl-k">class</span> <span class="pl-en">Rival</span> {
+    <span class="pl-k">...</span>
+	<span class="pl-k">var</span> previousPosition
+
+	method <span class="pl-en">acercarseA</span>(<span class="pl-smi">personaje</span>) {
+        <span class="pl-k">...</span>
+		previousPosition <span class="pl-k">=</span> position
+		position <span class="pl-k">=</span> <span class="pl-smi">game</span>.<span class="pl-en">at</span>(newX, newY)
+	}
+	
+    <span class="pl-k">...</span>
+	
+	method <span class="pl-en">chocarCon</span>(<span class="pl-smi">otro</span>) {
+		<span class="pl-smi">self</span>.<span class="pl-en">resetPreviousPosition</span>()
+	}
+	
+	method <span class="pl-en">resetPreviousPosition</span>() {
+		position <span class="pl-k">=</span> previousPosition 
+	}
+}</pre>
+</div>
 </body>
 </html>

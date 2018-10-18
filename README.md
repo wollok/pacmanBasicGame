@@ -175,3 +175,14 @@ class Rival {
 	}
 }
 ```
+
+# Cómo seguir
+
+Hay varios desafíos que te invitamos a resolver:
+
+- crear una cereza (existe ya la imagen cherry.png), que cuando el personaje la coma transforme a los rivales en "comestibles". Por un lado los rivales ya no deben querer acercarse al pacman (es decir que su estrategia cambia), por otra parte deben visualizarse en un color diferente (azul sería bueno), y cuando colisionen deben darle puntos al pacman, además de resetearse
+- la cereza da poderes por un cierto límite de tiempo, pasado ese tiempo los rivales vuelven a la normalidad
+- cuando el pacman pasa una cierta cantidad de puntos recupera una vida
+- cuando el pacman se mueva hacia arriba, que se visualice un gráfico del pacman con la boca apuntando para arriba, y lo mismo para las otras posiciones (abajo, derecha e izquierda)
+- **heavy**: armar un tablero con ladrillos que no se puedan traspasar, como en el [sokoban](https://github.com/wollok/sokobanGame)
+
