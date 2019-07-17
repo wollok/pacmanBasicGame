@@ -1,6 +1,8 @@
+import wollok.game.*
+
 object pacman {
 	var property position = game.origin()
-	var image = "pacman.png"
+	var property image = "pacman.png"
 	var vidas = 3
 
 	method juegoTerminado() = vidas == 0
@@ -11,7 +13,7 @@ object pacman {
 	
 	method chocarCon(rival) {
 		// sin dudas perdí una vida
-		vidas--
+		vidas-=1
 		// reset de las posiciones
 		self.resetPosition()
 		rival.resetPosition()
@@ -24,14 +26,9 @@ object pacman {
 
 class Rival {
 	const numero
-	var property position
-	var previousPosition
+	var property position = game.at(1, 1)
+	var previousPosition = game.at(1, 1)
 
-	constructor(_numero) {
-		numero = _numero
-		self.resetPosition()
-	}
-	
 	method image() = "rival" + numero.toString() + ".png"
 
 	method acercarseA(personaje) {
@@ -59,6 +56,6 @@ class Rival {
 }
 
 object cherry {
-	var image = "cherry.png"
-	var position = game.center()
+	var property image = "cherry.png"
+	var property position = game.center()
 }

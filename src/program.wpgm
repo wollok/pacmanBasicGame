@@ -1,3 +1,4 @@
+import wollok.game.*
 import example.*
 
 program pacman {
@@ -15,14 +16,14 @@ program pacman {
 	game.addVisualCharacter(pacman)
 
 	// rivales
-	const rivales = [new Rival(1), new Rival(2)]
+	const rivales = [new Rival(numero=1), new Rival(numero=2)]
 	
 	rivales.forEach { rival => 
 		game.addVisual(rival)
 		game.whenCollideDo(rival, { personaje =>
 			personaje.chocarCon(rival) // se maneja un método polimórfico
 		})
-		game.onTick(1.randomUpTo(5) * 1000, {
+		game.onTick(1.randomUpTo(5) * 1000, "movimiento", {
 			rival.acercarseA(pacman)
 		})
 	}
