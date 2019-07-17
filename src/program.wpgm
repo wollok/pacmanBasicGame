@@ -1,3 +1,4 @@
+import wollok.game.*
 import example.*
 
 program pacman {
@@ -15,7 +16,7 @@ program pacman {
 	game.addVisualCharacter(pacman)
 
 	// rivales
-	const rivales = [new Rival(1), new Rival(2)]
+	const rivales = [new Rival(numero = 1), new Rival(numero = 2)]
 	
 	rivales.forEach { rival => 
 		game.addVisual(rival)

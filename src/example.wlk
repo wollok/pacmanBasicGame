@@ -1,10 +1,11 @@
+import wollok.game.*
 object pacman {
-	var image = "pacman.png"
-	var position = game.origin()
+	var property image = "pacman.png"
+	var property position = game.origin()
 	var vidas = 3
 
 	method perderVida() {
-		vidas--
+		vidas -= 1
 		position = game.origin()	
 	}
 	
@@ -12,16 +13,12 @@ object pacman {
 }
 
 object cherry {
-	var image = "cherry.png"
-	var position = game.center()
+	var property image = "cherry.png"
+	var property position = game.center()
 }
 
 class Rival {
 	const numero
-	
-	constructor(_numero) {
-		numero = _numero
-	}
 	
 	method image() = "rival" + numero.toString() + ".png"
 
