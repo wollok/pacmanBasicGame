@@ -13,11 +13,10 @@ El rival debería
 
 En el programa, siempre dentro de la creación de rivales, hacemos:
 
-```js
+```wollok
 	rivales.forEach { rival => 
         ...
-		game.onTick(1.randomUpTo(5) * 1000, {
-			console.println("rival " + rival + " se acerca a " + pacman)
+		game.onTick(1.randomUpTo(5) * 1000, "movimiento", {
 			rival.acercarseA(pacman)
 		})
 	}
@@ -34,16 +33,11 @@ Para acercarse al pacman, debemos conocer su posición y como estrategia sencill
 
 Dentro de la clase Rival, escribimos
 
-```js
+```wollok
 class Rival {
 	var property position  // pasa a ser un atributo
 
-   	constructor(_numero) {
-		numero = _numero
-		position = game.at(numero + 1, numero + 1)
-	}
-
-    ...
+   	...
 
 	method acercarseA(personaje) {
 		var otroPosicion = personaje.position()
@@ -66,7 +60,7 @@ En el video vemos que hay algunos inconvenientes
 
 Vamos a mejorar la experiencia de usuario haciendo un refactor importante de nuestra solución, en el programa ya no vamos a asumir que "perdí una vida" ya que quien se mueve no es solo el pacman, sino también los rivales. Entonces queremos trabajar polimórficamente el hecho de que choquen entre sí:
 
-```js
+```wollok
 	rivales.forEach { rival => 
 		game.addVisual(rival)
 		game.whenCollideDo(rival, { personaje =>
@@ -85,10 +79,10 @@ Entonces el pacman al chocar
 - le pide al rival que resetee su posición
 - y verifica que el juego no haya terminado
 
-```js
+```wollok
 object pacman {
 	var property position = game.origin()
-	var image = "pacman.png"
+	var property image = "pacman.png"
 	var vidas = 3
 
 	method juegoTerminado() = vidas == 0
@@ -99,7 +93,7 @@ object pacman {
 	
 	method chocarCon(rival) {
 		// sin dudas perdí una vida
-		vidas--
+		vidas-=1
 		// reset de las posiciones
 		self.resetPosition()
 		rival.resetPosition()
@@ -113,15 +107,10 @@ object pacman {
 
 Por otro lado, el rival al chocar con otro rival no va a hacer nada. Pero vamos a mejorar la forma de acercarse hacia el personaje para que no caiga en el tablero (no puede bajar de la posición 0 ni excederse el máximo del ancho o alto del tablero):
 
-```js
+```wollok
 class Rival {
 	const numero
-	var property position
-
-	constructor(_numero) {
-		numero = _numero
-		self.resetPosition()
-	}
+	var property position = game.at(1, 1)
 	
 	method image() = "rival" + numero.toString() + ".png"
 
@@ -153,7 +142,7 @@ Ahora va pareciéndose a un juego, no?
 
 Vamos a evitar que dos rivales colisionen entre sí, para lo cual guardaremos la posición anterior, en caso de que haya colisión con otro rival vamos a respetar que el otro "nos ganó de mano" y volveremos a la posición anterior:
 
-```js
+```wollok
 class Rival {
     ...
 	var previousPosition
