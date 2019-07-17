@@ -1,4 +1,7 @@
 # Primer juego: Wollok Game
+ 
+[![Build Status](https://travis-ci.org/wollok/pacmanBasicGame.svg?branch=master)](https://travis-ci.org/wollok/pacmanBasicGame)
+
 
 Para conocer Wollok Game vamos a desarrollar un pac-man básico con el que conoceremos los conceptos principales del juego.
 
