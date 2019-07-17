@@ -1,4 +1,6 @@
+import wollok.game.*
+
 object pacman {
-	var image = "pacman.png"
-	var position = game.origin()
+	const property image = "pacman.png"
+	var property position = game.origin()
 }
