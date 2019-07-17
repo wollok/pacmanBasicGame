@@ -11,7 +11,7 @@ Para conocer Wollok Game vamos a desarrollar un pac-man básico con el que conoc
 
 Generamos un proyecto Wollok, con un programa. Lo primero que escribimos es
 
-```js
+```wollok
 program abc {
     
 	// que arranque el juego!
@@ -66,10 +66,10 @@ Vamos a crear un pacman, en el archivo example.wlk que nos generó el IDE de Wol
 
 Escribimos entonces nuestro pacman:
 
-```js
+```wollok
 object pacman {
-	var image = "pacman.png"
-	var position = game.origin()
+	var property image = "pacman.png"
+	var property position = game.origin()
 }
 ```
 
@@ -77,7 +77,7 @@ La imagen corresponde a un nombre de archivo que debe existir en la carpeta "ass
 
 Solamente necesitamos agregarlo al tablero de la siguiente manera:
 
-```js
+```wollok
 program pacman {
 	
     ...
