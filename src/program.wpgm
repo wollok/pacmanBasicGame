@@ -1,4 +1,5 @@
 import wollok.game.*
+import movimiento.*
 import example.*
 
 program pacman {
@@ -13,7 +14,9 @@ program pacman {
 	game.boardGround("pacmanBackground.jpg")
 	
 	// personaje principal
-	game.addVisualCharacter(pacman)
+	game.addVisual(pacman)
+	movimiento.configurarFlechas(pacman)
+	
 
 	// rivales
 	const rivales = [new Rival(numero = 1), new Rival(numero = 2)]
