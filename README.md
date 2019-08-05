@@ -46,6 +46,53 @@ program pacman {
 
 }
 ```
+## Movimiento manual del pacman
+
+Para facilitar la interacción, se reemplaza el movimiento automático por un movimiento manual, configurando las teclas de las flechas.
+
+Se agrega el pacman como objeto visual con un nuevo mensaje
+
+```wollok
+program pacman {
+    ...
+    game.addVisual(pacman)
+```
+
+Y complementariamente, se define el movimiento en un archivo aparte, de esta manera
+
+```wollok
+object movimiento {
+	
+	method configurarFlechas(visual){
+		keyboard.up().onPressDo{ self.mover(arriba,visual)}
+		keyboard.down().onPressDo{ self.mover(abajo,visual)}
+		keyboard.left().onPressDo{ self.mover(izquierda,visual)}
+		keyboard.right().onPressDo{ self.mover(derecha,visual)}
+   }
+	
+	method mover(direccion,personaje){
+		personaje.position(direccion.siguiente(personaje.position()))
+	}	
+	
+}
+
+object izquierda { 
+	method siguiente(position) = position.left(1) 
+}
+
+object derecha { 
+	method siguiente(position) = position.right(1) 
+}
+
+object abajo { 
+	method siguiente(position) = position.down(1) 
+}
+
+object arriba { 
+	method siguiente(position) = position.up(1) 
+}
+```
+
 
 ## Estrategia de colisión contra los rivales
 
