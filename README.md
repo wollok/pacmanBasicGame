@@ -16,13 +16,9 @@ program pacman {
 
 Vamos a generar dos rivales inicialmente, que no tienen un comportamiento diferencial, ambos van a ser objetos visuales ubicados en posiciones distintas y con colores diferentes. Entonces una clase rival suena bien, la ubicamos en el archivo `exmample.wlk`:
 
-```js
+```wollok
 class Rival {
 	const numero
-	
-	constructor(_numero) {
-		numero = _numero
-	}
 	
 	method image() = "rival" + numero.toString() + ".png"
 
@@ -30,7 +26,7 @@ class Rival {
 }
 ```
 
-El constructor del rival necesita el número, para determinar
+Al insntanciar a los rivales se le pasa el número, para determinar
 
 - la imagen que va a utilizar: "rival1.png", "rival2.png", etc.
 - y la posición inicial que va a ocupar, (2, 2) para el primer rival, (3, 3) para el segundo rival, etc.
@@ -40,13 +36,13 @@ El constructor del rival necesita el número, para determinar
 
 En el programa pacman incorporamos los dos rivales:
 
-```js
+```wollok
 program pacman {
     ...
 
 	// rivales
-	game.addVisual(new Rival(1))
-	game.addVisual(new Rival(2))
+	game.addVisual(new Rival(numero = 1))
+	game.addVisual(new Rival(numero = 2))
 
 }
 ```
@@ -60,9 +56,9 @@ Si ejecutamos el programa, no tiene mucha gracia: el personaje pasa por encima d
 
 Para eso, necesitamos tener una referencia a los rivales. Cambiaremos entonces la forma de instanciarlos en el programa:
 
-```js
+```wollok
     // rivales
-	const rivales = [new Rival(1), new Rival(2)]
+	const rivales = [new Rival(numero =1), new Rival(numero =2)]
 	
 	rivales.forEach { rival => 
 		game.addVisual(rival)
@@ -81,13 +77,13 @@ Ahora sí implementamos la pérdida de la vida del pacman, para eso
 - necesitamos contar cuántas vidas tiene, con una referencia a un número nos alcanza
 - y actualizar la posición donde se encuentra
 
-```js
+```wollok
 object pacman {
     ...
 	var vidas = 3
 
 	method perderVida() {
-		vidas--
+		vidas-=1
 		position = game.origin()	
 	}
 ```
@@ -96,7 +92,7 @@ object pacman {
 
 Un agregado más: vamos a parar el juego cuando el pacman pierda tres vidas. Entonces agregamos una pregunta, pero sin saber que el pacman tiene vidas. En el programa:
 
-```js
+```wollok
 	rivales.forEach { rival => 
 		game.addVisual(rival)
 		game.whenCollideDo(rival, { personaje =>
@@ -110,7 +106,7 @@ Un agregado más: vamos a parar el juego cuando el pacman pierda tres vidas. Ent
 
 Solo nos falta definir el método juegoTerminado() en pacman:
 
-```js
+```wollok
 method juegoTerminado() = vidas == 0
 ```
 
