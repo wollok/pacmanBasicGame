@@ -25,9 +25,9 @@ object pacman {
 }
 
 class Rival {
-	const numero
-	var property position = game.at(1, 1)
-	var previousPosition = game.at(1, 1)
+	const numero = 1
+	var property position = game.at(3, 3)
+	var previousPosition = position
 
 	method image() = "rival" + numero.toString() + ".png"
 
