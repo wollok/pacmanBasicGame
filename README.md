@@ -93,7 +93,7 @@ object pacman {
 	
 	method chocarCon(rival) {
 		// sin dudas perdí una vida
-		vidas-=1
+		vidas = vidas - 1
 		// reset de las posiciones
 		self.resetPosition()
 		rival.resetPosition()
