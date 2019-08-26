@@ -109,8 +109,8 @@ Por otro lado, el rival al chocar con otro rival no va a hacer nada. Pero vamos 
 
 ```wollok
 class Rival {
-	const numero
-	var property position = game.at(1, 1)
+	const numero = 1
+	var property position = game.at(3, 3)
 	
 	method image() = "rival" + numero.toString() + ".png"
 

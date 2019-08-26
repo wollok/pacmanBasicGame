@@ -23,7 +23,7 @@ program pacman {
 		game.whenCollideDo(rival, { personaje =>
 			personaje.chocarCon(rival) // se maneja un método polimórfico
 		})
-		game.onTick(1.randomUpTo(5) * 1000, "movimiento", {
+		game.onTick(1.randomUpTo(5) * 300, "movimiento", {
 			rival.acercarseA(pacman)
 		})
 	}
