@@ -1,5 +1,4 @@
 import wollok.game.*
-import movimiento.*
 import example.*
 
 program pacman {
@@ -14,8 +13,7 @@ program pacman {
 	game.boardGround("pacmanBackground.jpg")
 	
 	// personaje principal
-	game.addVisual(pacman)
-	movimiento.configurarFlechas(pacman)
+	game.addVisualCharacter(pacman)
 	
 
 	// rivales

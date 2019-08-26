@@ -5,7 +5,7 @@ object pacman {
 	var vidas = 3
 
 	method perderVida() {
-		vidas -= 1
+		vidas = vidas - 1
 		position = game.origin()	
 	}
 	
