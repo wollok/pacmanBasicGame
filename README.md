@@ -34,7 +34,7 @@ Pueden elegir cualquiera de las imágenes que quieran, lo debemos guardar en una
 Ahora sí, podemos actualizar el programa, poniéndole un nombre más representativo que abc:
 
 ```js
-program pacman {
+program pacmanGame {
 	
 	// límites del juego
 	game.width(14)
@@ -70,7 +70,7 @@ La imagen corresponde a un nombre de archivo que debe existir en la carpeta "ass
 Solamente necesitamos agregarlo al tablero de la siguiente manera:
 
 ```wollok
-program pacman {
+program pacmanGame {
 	
     ...
 	
