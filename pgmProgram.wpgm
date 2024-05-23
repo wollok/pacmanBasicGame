@@ -1,7 +1,7 @@
 import wollok.game.*
 import example.*
 
-program pacman {
+program pacmanGame {
 	
 	// límites del juego
 	game.width(14)

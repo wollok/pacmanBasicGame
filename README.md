@@ -29,15 +29,7 @@ Para que el tablero se vea un poco más interesante, vamos a
 - agrandar su tamaño, eso nos permitirá que luego nuestro personaje se pueda mover más confortablemente
 - y pondremos una imagen bonita de fondo
 
-Pueden elegir cualquiera de las imágenes que quieran, lo debemos guardar en una carpeta que tiene que ser **carpeta fuente**. Si ya bajaste el archivo en una carpeta asset, en el Wollok IDE te va a aparecer como una carpeta común, lo pasás a carpeta fuente de la siguiente manera:
-
-<img src="videos/sourceFolder.gif" height="60%" width="60%"/>
-
-(podés agrandar la imagen haciendo click en ella)
-
-De lo contrario, lo común es generar una carpeta fuente desde cero, como se muestra a continuación:
-
-<img src="videos/newSourceFolder.gif" height="60%" width="60%"/>
+Pueden elegir cualquiera de las imágenes que quieran, lo debemos guardar en una carpeta que tiene que ser **assets** (o puede ser alguna diferente si la configurás en [el archivo package.json](./package.json)). 
 
 Ahora sí, podemos actualizar el programa, poniéndole un nombre más representativo que abc:
 
@@ -93,7 +85,7 @@ program pacman {
 
 Y listo! Tenemos una primera versión de nuestro juego:
 
-![demo](videos/firstGame.gif)
+![demo](./videos/demoFirstGame.gif)
 
 # Cómo seguir con el tutorial
 
