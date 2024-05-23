@@ -26,7 +26,7 @@ class Rival {
 }
 ```
 
-Al insntanciar a los rivales se le pasa el número, para determinar
+Al instanciar a los rivales se le pasa el número, para determinar
 
 - la imagen que va a utilizar: "rival1.png", "rival2.png", etc.
 - y la posición inicial que va a ocupar, (2, 2) para el primer rival, (3, 3) para el segundo rival, etc.
@@ -46,6 +46,7 @@ program pacman {
 
 }
 ```
+
 ## Estrategia de colisión contra los rivales
 
 Si ejecutamos el programa, no tiene mucha gracia: el personaje pasa por encima de sus rivales y éstos, como si nada. Vamos a jugar un poco con estrategia de colisión, cada vez que el personaje choque con un rival
@@ -56,8 +57,8 @@ Si ejecutamos el programa, no tiene mucha gracia: el personaje pasa por encima d
 Para eso, necesitamos tener una referencia a los rivales. Cambiaremos entonces la forma de instanciarlos en el programa:
 
 ```wollok
-    // rivales
-	const rivales = [new Rival(numero =1), new Rival(numero =2)]
+  // rivales
+  const rivales = [new Rival(numero = 1), new Rival(numero = 2)]
 	
 	rivales.forEach { rival => 
 		game.addVisual(rival)
@@ -67,7 +68,7 @@ Para eso, necesitamos tener una referencia a los rivales. Cambiaremos entonces l
 	}
 ```
 
-Y qué hace el método perderVida() de pacman? Al rival no le importa, la delegación funciona también en los juegos.
+Y ¿qué hace el método perderVida() de pacman? Al rival no le importa, la delegación funciona también en los juegos.
 
 ## Perdiendo una vida
 
@@ -82,14 +83,14 @@ object pacman {
 	var vidas = 3
 
 	method perderVida() {
-		vidas-=1
+		vidas = vidas - 1
 		position = game.origin()	
 	}
 ```
 
 ## Terminando el juego
 
-Un agregado más: vamos a parar el juego cuando el pacman pierda tres vidas. Entonces agregamos una pregunta, pero sin saber que el pacman tiene vidas. En el programa:
+Un agregado más: vamos a parar el juego cuando el pacman pierda tres vidas. Entonces agregamos una pregunta, pero sin saber que el pacman tiene vidas. También para mejorar la UX (Experiencia de Usuario) vamos a pedirle al Pacman que avise cuando pierde una vida y cuando el programa termina. En el programa:
 
 ```wollok
 	rivales.forEach { rival => 

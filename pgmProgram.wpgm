@@ -1,7 +1,7 @@
 import wollok.game.*
 import example.*
 
-program pacman {
+program pacmanGame {
 	
 	game.title("Pacman!")
 	
@@ -23,8 +23,10 @@ program pacman {
 		game.addVisual(rival)
 		game.whenCollideDo(rival, { personaje =>
 			personaje.perderVida()
+			game.say(pacman, "Ups! Perdí una vida")
 			if (personaje.juegoTerminado()) {
-				game.stop()
+				game.say(pacman, "Se me terminaron las vidas!!!")
+				game.onTick(5000, "gameEnd", { game.stop() })
 			}
 		})
 	}
