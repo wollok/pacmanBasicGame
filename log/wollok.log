@@ -270,3 +270,10 @@
 {"exitCode":0,"level":"info","message":"👾 Game executed pgmProgram.pacmanGame on /home/dodain/workspace/wollok-dev/wollok-workspace/migracion-proyectos/pacmanBasicGame","timeElapsed":14187,"timestamp":"2024-05-23T01:18:28.756Z"}
 {"exitCode":0,"level":"info","message":"👾 Game executed pgmProgram.pacmanGame on /home/dodain/workspace/wollok-dev/wollok-workspace/migracion-proyectos/pacmanBasicGame","timeElapsed":17239,"timestamp":"2024-05-23T01:26:22.364Z"}
 {"exitCode":0,"level":"info","message":"👾 Game executed pgmProgram.pacmanGame on /home/dodain/workspace/wollok-dev/wollok-workspace/migracion-proyectos/pacmanBasicGame","timeElapsed":12994,"timestamp":"2024-05-23T01:26:41.557Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":182,"timestamp":"2024-05-24T00:27:32.394Z"}
+{"level":"info","message":"onRequest - WORKSPACE_URI:file:///home/dodain/workspace/wollok-dev/wollok-workspace/migracion-proyectos/pacmanBasicGame","timestamp":"2024-05-24T00:27:32.396Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":106,"timestamp":"2024-05-24T00:27:32.503Z"}
+{"exitCode":0,"level":"info","message":"👾 Game executed pgmProgram.pacmanGame on /home/dodain/workspace/wollok-dev/wollok-workspace/migracion-proyectos/pacmanBasicGame","timeElapsed":209749,"timestamp":"2024-05-24T00:31:06.098Z"}
+{"level":"info","message":"onRequest - STRONG_FILES_CHANGED:/home/dodain/workspace/wollok-dev/wollok-workspace/migracion-proyectos/pacmanBasicGame/videos/demo.gif","timestamp":"2024-05-24T00:31:26.245Z"}
+{"level":"info","message":"onRequest - WORKSPACE_URI:file:///home/dodain/workspace/wollok-dev/wollok-workspace/migracion-proyectos/pacmanBasicGame","timestamp":"2024-05-24T00:31:26.421Z"}
+{"level":"info","message":"Removing diagnostics from /home/dodain/workspace/wollok-dev/wollok-workspace/migracion-proyectos/pacmanBasicGame/videos/demo.gif","timestamp":"2024-05-24T00:31:26.557Z"}

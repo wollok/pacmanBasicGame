@@ -1,5 +1,7 @@
 # Pacman!
 
+[![build](https://github.com/wollok/pacmanBasicGame/actions/workflows/ci.yml/badge.svg?branch=02-rivales)](https://github.com/wollok/pacmanBasicGame/actions/workflows/ci.yml)
+
 # Segunda iteración: rivales
 
 ## Algunos ajustes al tablero
@@ -112,7 +114,7 @@ method juegoTerminado() = vidas == 0
 
 # Demo de cómo quedaría el juego hasta ahora
 
-![video](videos/demo.gif)
+![video](videos/demo2.gif)
 
 # Cómo seguir con el tutorial
 
