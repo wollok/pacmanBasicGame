@@ -19,7 +19,10 @@ object pacman {
 		rival.resetPosition()
 		// agregamos la validación del juego terminado en pacman
 		if (self.juegoTerminado()) {
-			game.stop()
+			game.say(self, "Se me terminaron las vidas!!!")
+			game.onTick(5000, "gameEnd", { game.stop() })
+		} else {
+			game.say(self, "Ups! Perdí una vida")
 		}
 	}
 }
@@ -32,7 +35,7 @@ class Rival {
 	method image() = "rival" + numero.toString() + ".png"
 
 	method acercarseA(personaje) {
-		var otroPosicion = personaje.position()
+		const otroPosicion = personaje.position()
 		var newX = position.x() + if (otroPosicion.x() > position.x()) 1 else -1
 		var newY = position.y() + if (otroPosicion.y() > position.y()) 1 else -1
 		// evitamos que se posicionen fuera del tablero

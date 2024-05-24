@@ -16,7 +16,7 @@ En el programa, siempre dentro de la creación de rivales, hacemos:
 ```wollok
 	rivales.forEach { rival => 
         ...
-		game.onTick(1.randomUpTo(5) * 1000, "movimiento", {
+		game.onTick(1.randomUpTo(5) * 500, "movimiento", {
 			rival.acercarseA(pacman)
 		})
 	}
@@ -40,7 +40,7 @@ class Rival {
    	...
 
 	method acercarseA(personaje) {
-		var otroPosicion = personaje.position()
+		const otroPosicion = personaje.position()
 		var newX = position.x() + if (otroPosicion.x() > position.x()) 1 else -1
 		var newY = position.y() + if (otroPosicion.y() > position.y()) 1 else -1
 		position = game.at(newX, newY)
@@ -49,16 +49,7 @@ class Rival {
 
 El método es un poco largo, podemos refactorizarlo luego.
 
-## Demo de cómo quedaría el juego hasta ahora
-
-![video](videos/demo.gif)
-
-En el video vemos que hay algunos inconvenientes
-
-- si el personaje no se mueve, la colisión contra un rival hace que pierda el juego porque se repiten 3 colisiones muy rápidamente
-- por otra parte, si colisionan dos rivales, esto hace que se produzca un mensaje no entendido: perderVida() solo lo entiende el pacman, no el rival
-
-Vamos a mejorar la experiencia de usuario haciendo un refactor importante de nuestra solución, en el programa ya no vamos a asumir que "perdí una vida" ya que quien se mueve no es solo el pacman, sino también los rivales. Entonces queremos trabajar polimórficamente el hecho de que choquen entre sí:
+Además queremos trabajar polimórficamente el hecho de que choquen entre sí:
 
 ```wollok
 	rivales.forEach { rival => 
@@ -66,7 +57,7 @@ Vamos a mejorar la experiencia de usuario haciendo un refactor importante de nue
 		game.whenCollideDo(rival, { personaje =>
 			personaje.chocarCon(rival) // se maneja un método polimórfico
 		})
-		game.onTick(1.randomUpTo(5) * 1000, {
+		game.onTick(1.randomUpTo(5) * 500, {
 			rival.acercarseA(pacman)
 		})
 	}
@@ -99,7 +90,10 @@ object pacman {
 		rival.resetPosition()
 		// agregamos la validación del juego terminado en pacman
 		if (self.juegoTerminado()) {
-			game.stop()
+			game.say(self, "Se me terminaron las vidas!!!")
+			game.onTick(5000, "gameEnd", { game.stop() })
+		} else {
+			game.say(self, "Ups! Perdí una vida")
 		}
 	}
 }
@@ -136,7 +130,7 @@ class Rival {
 
 Ahora va pareciéndose a un juego, no?
 
-![demo](videos/demo2.gif)
+![demo](videos/demo3.gif)
 
 # Un último chiche
 

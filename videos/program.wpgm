@@ -1,7 +1,7 @@
 import wollok.game.*
 import example.*
 
-program pacman {
+program pacmanGame {
 	
 	game.title("Pacman!")
 	
@@ -23,7 +23,7 @@ program pacman {
 		game.whenCollideDo(rival, { personaje =>
 			personaje.chocarCon(rival) // se maneja un método polimórfico
 		})
-		game.onTick(1.randomUpTo(5) * 300, "movimiento", {
+		game.onTick(1.randomUpTo(5) * 500, "movimiento", {
 			rival.acercarseA(pacman)
 		})
 	}
