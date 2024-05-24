@@ -1,5 +1,7 @@
 # Pacman!
 
+[![build](https://github.com/wollok/pacmanBasicGame/actions/workflows/ci.yml/badge.svg?branch=03-movimiento)](https://github.com/wollok/pacmanBasicGame/actions/workflows/ci.yml)
+
 # Tercera iteración: rivales en movimiento
 
 Por el momento, los rivales están parados, entonces mientras el personaje no vaya hacia sus rivales, éstos no le quitarán vidas. Vamos a hacerlo un poco más interesante.
