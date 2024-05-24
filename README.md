@@ -9,7 +9,7 @@
 Con el gimp o cualquier programa de edición, vamos a ajustar el fondo para que tenga menos contraste y se vea con efecto más apagado, para que los personajes y los elementos se distingan más. Además le vamos a poner un título al juego:
 
 ```js
-program pacman {
+program pacmanGame {
 	
 	game.title("Pacman!")
 ```
